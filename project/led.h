@@ -10,6 +10,8 @@
 
 #define LEDS (BIT0 | BIT6)
 
+void buzzer_init();
 
+void buzzer_set_period(short cycles); 
 
 #endif // included
