@@ -18,22 +18,28 @@ AS              = msp430-elf-as
 
 
 
-all: led.elf
+all: led-c.elf led-s.elf
 
 
 
 #additional rules for files
 
-led.elf: ${COMMON_OBJECTS}
+led-c.elf: ${COMMON_OBJECTS}led_init-c.o
 
-	${CC} ${CFLAGS} ${LDFLAGS} -o $@ $^ ../demos/lib/libTimer.a
+	${CC} ${CFLAGS} ${LDFLAGS} -o $@ $^ ../demos/timerLib/libTimer.a
+
+led-s.elf: ${COMMON_OBJECTS} led_init-s.o
+
+	${CC} ${CFLAGS} ${LDFLAGS} -o $@ $^ ../demos/timerLib/libTimer.a
 
 
-
-load: led.elf
+load-c: led-c.elf
 
 	msp430loader.sh led.elf
 
+load-s: led-s.elf
+
+	msp430loader.sh $^
 
 
 clean:
@@ -43,7 +49,7 @@ clean:
 
 
 main.o: led.h
-
-
-
+led-c.o: led.h
 wdInterruptHandler.o:  led.h
+
+led-on-c.o: led.h led_init-c.c
